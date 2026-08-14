@@ -1,32 +1,31 @@
 // MarkdownRenderLog.swift
-// RunBot
+// MarkdownKit
 import OSLog
 
-/// Internal diagnostic logger for the MarkdownRender pipeline.
+/// Internal diagnostics for the MarkdownKit rendering pipeline.
 ///
-/// All events are emitted under `com.runbot-hq.RunBot` / `MarkdownRender`.
-/// Duplicate the logger constant in RunBot targets; both emit into the same
-/// filtered stream without exposing package diagnostics publicly.
+/// Uses a package-owned subsystem so MarkdownKit does not depend on a
+/// consuming application's logging namespace.
 enum MarkdownRenderLog {
     /// Shared `os_log` logger scoped to `MarkdownRender` category.
     static let logger = Logger(
-        subsystem: "com.runbot-hq.RunBot",
+        subsystem: "io.github.markdownkit",
         category: "MarkdownRender"
     )
 
     /// Emits a debug-level log event (verbose; filtered in production).
     static func debug(_ message: String) {
-        logger.debug("\(message, privacy: .public)")
+        logger.debug("\\(message, privacy: .public)")
     }
 
     /// Emits a notice-level log event (always visible in Console.app).
     static func notice(_ message: String) {
-        logger.notice("\(message, privacy: .public)")
+        logger.notice("\\(message, privacy: .public)")
     }
 
     /// Emits an error-level log event.
     static func error(_ message: String) {
-        logger.error("\(message, privacy: .public)")
+        logger.error("\\(message, privacy: .public)")
     }
 }
 
@@ -36,7 +35,7 @@ extension MarkdownBlock {
     /// Short stable string identifying the block kind — safe to log (no content).
     public var renderLogKind: String {
         switch self {
-        case .heading(let level, _): return "heading-\(level)"
+        case .heading(let level, _): return "heading-\\(level)"
         case .paragraph:             return "paragraph"
         case .orderedList:           return "ordered-list"
         case .unorderedList:         return "unordered-list"
@@ -65,3 +64,4 @@ extension InlineNode {
         }
     }
 }
+
